@@ -48,11 +48,11 @@ export class PortfolioPage {
     private readonly shopService: ShopService
   ) {
     this.isDesktop = !this.platform.is('hybrid')
-
+    console.log('wallet provider', this.walletsProvider)
     this.wallets = this.walletsProvider.wallets$.asObservable()
     this.activeWallets = this.wallets.pipe(map((wallets) => wallets.filter((wallet) => wallet.status === AirGapWalletStatus.ACTIVE) ?? []))
     this.walletGroups = walletsProvider.walletsGroupedByMainWallet$
-
+    console.log('wallets:', this.walletGroups, this.wallets)
     // If a wallet gets added or removed, recalculate all values
     const walletSub = this.wallets.subscribe(() => {
       this.calculateTotal(this.walletsProvider.getActiveWalletList())
@@ -118,6 +118,7 @@ export class PortfolioPage {
   public async calculateTotal(wallets: AirGapMarketWallet[], refresher: any = null): Promise<void> {
     const cryptoToFiatPipe = new CryptoToFiatPipe(this.protocolService)
     wallets = wallets.filter((wallet) => wallet.status === AirGapWalletStatus.ACTIVE)
+    console.log('active wallets', wallets)
     this.total = (
       await Promise.all(
         wallets.map((wallet) =>
@@ -130,10 +131,12 @@ export class PortfolioPage {
     )
       .reduce((sum: BigNumber, next: string) => sum.plus(next), new BigNumber(0))
       .toNumber()
-
+    console.log('after active balance')
     if (refresher) {
       refresher.complete()
     }
+
+    console.log('visible active balance')
 
     this.isVisible = 'visible'
   }

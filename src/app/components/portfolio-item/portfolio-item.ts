@@ -146,6 +146,10 @@ export class PortfolioItemComponent {
     if (this.wallet === undefined) {
       return
     }
+    if (!this.wallet) {
+      return
+    }
+    console.log('wall:', this.wallet)
     const protocol = this.wallet.protocol
     let parent: ICoinSubProtocol | undefined = undefined
     if (isSubProtocol(protocol)) {

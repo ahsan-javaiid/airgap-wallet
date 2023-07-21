@@ -117,6 +117,7 @@ export class AccountAddPage {
         !toFilter.includes(protocol.identifier)
     )
     this.filterProtocols()
+    console.log('filteredAccountProtocols', this.filteredAccountProtocols)
   }
 
   public searchTermChanged() {

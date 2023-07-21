@@ -51,6 +51,10 @@ const modules = [
     import: '../../../node_modules/@airgap/optimism'
   },
   {
+    namespace: 'rootstock',
+    import: '../../../node_modules/@airgap/rootstock'
+  },
+  {
     namespace: 'polkadot',
     import: '../../../node_modules/@airgap/polkadot'
   },

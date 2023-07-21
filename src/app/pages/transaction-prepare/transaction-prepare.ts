@@ -3,6 +3,7 @@ import {
   AmountConverterPipe,
   ClipboardService,
   createV0EthereumProtocol,
+  createV0RootstockProtocol,
   createV0TezosProtocol,
   ICoinProtocolAdapter
 } from '@airgap/angular-core'
@@ -406,6 +407,8 @@ export class TransactionPreparePage {
       return this.priceService.getCurrentMarketPrice(await createV0TezosProtocol(), 'USD').then((price: BigNumber) => price.toNumber())
     } else if (wallet.protocol.identifier.startsWith(SubProtocolSymbols.ETH_ERC20)) {
       return this.priceService.getCurrentMarketPrice(await createV0EthereumProtocol(), 'USD').then((price: BigNumber) => price.toNumber())
+    } else if (wallet.protocol.identifier.startsWith(SubProtocolSymbols.RBTC_ERC20)) {
+      return this.priceService.getCurrentMarketPrice(await createV0RootstockProtocol(), 'USD').then((price: BigNumber) => price.toNumber())
     } else {
       return wallet.getCurrentMarketPrice(this.collectibleID)?.toNumber() ?? 0
     }

@@ -23,6 +23,13 @@ interface CheckItem {
   check: () => Promise<boolean>
 }
 
+// TODO: Should be provided by the API
+const rskHealthMock = {
+  identifier: MainProtocolSymbols.ROOTSTOCK,
+  node: { isHealthy: true },
+  explorer: { isHealthy: true }
+}
+
 @Component({
   selector: 'app-health-check',
   templateUrl: './health-check.page.html',
@@ -44,6 +51,8 @@ export class HealthCheckPage {
       this.generateCheckItem('Tezos', MainProtocolSymbols.XTZ, ApiType.Explorer),
       this.generateCheckItem('Bitcoin', MainProtocolSymbols.BTC, ApiType.NODE),
       this.generateCheckItem('Ethereum', MainProtocolSymbols.ETH, ApiType.NODE),
+      this.generateCheckItem('Rootstock', MainProtocolSymbols.ROOTSTOCK, ApiType.NODE),
+      this.generateCheckItem('Rootstock', MainProtocolSymbols.ROOTSTOCK, ApiType.Explorer),
       this.generateCheckItem('Ethereum', MainProtocolSymbols.ETH, ApiType.Explorer),
       this.generateCheckItem('Polkadot', MainProtocolSymbols.POLKADOT, ApiType.NODE),
       this.generateCheckItem('Polkadot', MainProtocolSymbols.POLKADOT, ApiType.Explorer),
@@ -58,8 +67,13 @@ export class HealthCheckPage {
   public async ionViewWillEnter() {
     this.displayLoading()
     this.coinlibService.checkApiHealth().then((apiHealth) => {
-      this.apiHealth = apiHealth
-      this.loadingElement.dismiss()
+      // this.apiHealth = apiHealth
+      // this.loadingElement.dismiss()
+
+      this.apiHealth = apiHealth.concat(rskHealthMock) // TODO: Api result instead of mock
+      this.loadingElement?.dismiss()
+
+
       this.runChecks()
     })
   }

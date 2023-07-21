@@ -4,9 +4,11 @@ const fs = require('fs')
 const path = require('path')
 
 const rootdir = ''
-const coreDependencies = path.join(rootdir, 'node_modules/@airgap/coinlib-core/dependencies/src')
+const coreDependenciesA = path.join(rootdir, 'node_modules/@airgap/coinlib-core/dependencies/src')
+const coreDependenciesB = path.join(rootdir, 'node_modules/@ledgerhq/hw-transport/lib')
+const coreDependenciesC = path.join(rootdir, 'node_modules/@zondax/ledger-substrate/node_modules/@ledgerhq/hw-transport/lib')
 
-const dependencies = [coreDependencies]
+const dependencies = [coreDependenciesA, coreDependenciesB, coreDependenciesC]
 
 function removeTypes(path) {
   const isDirectory = fs.lstatSync(path).isDirectory()

@@ -1,4 +1,4 @@
-import { createV0EthereumProtocol, createV0TezosProtocol, ProtocolService } from '@airgap/angular-core'
+import { createV0EthereumProtocol, createV0RootstockProtocol, createV0TezosProtocol, ProtocolService } from '@airgap/angular-core'
 import {
   AirGapMarketWallet,
   AirGapWalletStatus,
@@ -11,6 +11,7 @@ import {
 } from '@airgap/coinlib-core'
 import { NetworkType } from '@airgap/coinlib-core/utils/ProtocolNetwork'
 import { IACMessageType } from '@airgap/serializer'
+// import { createRootstockProtocol } from '@airgap/rootstock'
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
@@ -361,8 +362,16 @@ export class ExchangePage implements OnInit, OnDestroy {
         feeCurrentMarketPrice = await this.priceService
           .getCurrentMarketPrice(await createV0TezosProtocol(), 'USD')
           .then((price: BigNumber) => price.toNumber())
-      } else {
+      } 
+      else if (this.selectedFromProtocol.identifier.startsWith(SubProtocolSymbols.RBTC_ERC20)) {
+        feeCurrentMarketPrice = this.priceService
+          .getCurrentMarketPrice(await createV0RootstockProtocol(), 'USD')
+          .then((price: BigNumber) => price.toNumber())
+      }
+      else {
+        console.log('are we here ')
         feeCurrentMarketPrice = (await this.priceService.getCurrentMarketPrice(this.selectedFromProtocol, 'USD')).toNumber()
+        console.log('should print')
       }
 
       this.updateState({

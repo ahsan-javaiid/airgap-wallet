@@ -23,6 +23,7 @@ export class ProtocolGuard implements CanActivate {
       if (
         mainProtocolID === MainProtocolSymbols.ETH ||
         mainProtocolID === MainProtocolSymbols.OPTIMISM ||
+        mainProtocolID === MainProtocolSymbols.ROOTSTOCK ||
         mainProtocolID === MainProtocolSymbols.XTZ
       ) {
         subSymbols = (await this.protocolService.getAllSubProtocols(mainProtocolID)).map((protocol: ICoinProtocol) =>

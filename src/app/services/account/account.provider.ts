@@ -184,7 +184,7 @@ export class AccountProvider {
     const groups: MainWalletGroup[] = []
 
     const walletMap: Map<string, MainWalletGroup> = new Map()
-
+    console.log('www', wallets)
     wallets
       .filter((wallet: AirGapMarketWallet) => wallet.status === AirGapWalletStatus.ACTIVE)
       .forEach((wallet: AirGapMarketWallet) => {
@@ -395,7 +395,7 @@ export class AccountProvider {
     try {
       const identifier = await airGapWallet.protocol.getIdentifier()
       // if we have no addresses, derive using webworker and sync, else just sync
-      const excludedProtocols = [MainProtocolSymbols.ETH, MainProtocolSymbols.OPTIMISM]
+      const excludedProtocols = [MainProtocolSymbols.ROOTSTOCK, MainProtocolSymbols.ETH, MainProtocolSymbols.OPTIMISM]
       const isWalletExcluded = excludedProtocols.some((protocolSymbol: ProtocolSymbols) => identifier.startsWith(protocolSymbol))
       if (
         airGapWallet.addresses.length === 0 ||

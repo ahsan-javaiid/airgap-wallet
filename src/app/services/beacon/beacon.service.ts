@@ -317,6 +317,8 @@ export class BeaconService {
       >]: TezosProtocolNetwork
     } = {
       [BeaconNetworkType.MAINNET]: TEZOS_MAINNET_PROTOCOL_NETWORK,
+      [BeaconNetworkType.MUMBAINET]: TEZOS_MAINNET_PROTOCOL_NETWORK,
+      [BeaconNetworkType.LIMANET]: TEZOS_MAINNET_PROTOCOL_NETWORK,
       [BeaconNetworkType.GHOSTNET]: {
         ...TEZOS_GHOSTNET_PROTOCOL_NETWORK,
         name: network.name || TEZOS_GHOSTNET_PROTOCOL_NETWORK.name,

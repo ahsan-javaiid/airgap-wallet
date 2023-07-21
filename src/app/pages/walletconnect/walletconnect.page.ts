@@ -92,7 +92,7 @@ export class WalletconnectPage implements OnInit {
     this.subscription = this.accountService.allWallets$.asObservable().subscribe((wallets: AirGapMarketWallet[]) => {
       this.selectableWallets = wallets.filter(
         (wallet: AirGapMarketWallet) =>
-          wallet.protocol.identifier === MainProtocolSymbols.ETH && wallet.status === AirGapWalletStatus.ACTIVE
+          (wallet.protocol.identifier === MainProtocolSymbols.ETH || wallet.protocol.identifier === MainProtocolSymbols.ROOTSTOCK) && wallet.status === AirGapWalletStatus.ACTIVE
       )
       if (this.selectableWallets.length > 0) {
         this.selectedWallet = this.selectableWallets[0]

@@ -3,6 +3,7 @@ import { ICoinProtocol, MainProtocolSymbols } from '@airgap/coinlib-core'
 import { ERC20TokenMetadata } from '@airgap/ethereum'
 import { protocolNetworkIdentifier } from '@airgap/module-kit'
 import { ERC20Token, isOptimismERC20Token, OptimismModule, OptimismProtocolNetwork } from '@airgap/optimism'
+// import { isRootstockERC20Token, RootstockModule, RootstockProtocolNetwork } from '@airgap/rootstock'
 
 import { Injectable } from '@angular/core'
 import { ComponentStore, tapResponse } from '@ngrx/component-store'

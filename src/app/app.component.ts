@@ -32,6 +32,7 @@ import {
   SubProtocolSymbols
 } from '@airgap/coinlib-core'
 import { CoreumModule } from '@airgap/coreum'
+import { RootstockModule } from '@airgap/rootstock'
 import { CosmosModule } from '@airgap/cosmos'
 import { EthereumModule } from '@airgap/ethereum'
 import { GroestlcoinModule } from '@airgap/groestlcoin'
@@ -235,6 +236,11 @@ export class AppComponent implements AfterViewInit {
   }
 
   private async initializeProtocols(): Promise<void> {
+    console.log('before rootstock')
+    console.log('init called', RootstockModule);
+    console.log('init called', EthereumModule);
+    console.log('after rootstock')
+
     this.modulesService.init([
       new BitcoinModule(),
       new EthereumModule(),
@@ -247,14 +253,20 @@ export class AppComponent implements AfterViewInit {
       new AstarModule(),
       new ICPModule(),
       new CoreumModule(),
-      new OptimismModule()
+      new OptimismModule(),
+      new RootstockModule()
     ])
+    console.log(  MainProtocolSymbols.XTZ_SHIELDED,
+      SubProtocolSymbols.XTZ_STKR,
+      SubProtocolSymbols.XTZ_W, this.initSaplingProtocols,  this.getGenericSubProtocols, this.initializeTezosDomains)
+    console.log("after init 00")
+    // hanged here
     const v1Protocols = await this.modulesService.loadProtocols('online', [
       MainProtocolSymbols.XTZ_SHIELDED,
       SubProtocolSymbols.XTZ_STKR,
       SubProtocolSymbols.XTZ_W
     ])
-
+    console.log("after init 11")
     await this.protocolService.init({
       activeProtocols: v1Protocols.activeProtocols,
       passiveProtocols: v1Protocols.passiveProtocols,
@@ -262,19 +274,32 @@ export class AppComponent implements AfterViewInit {
       passiveSubProtocols: v1Protocols.passiveSubProtocols
     })
 
-    await Promise.all([this.initSaplingProtocols(), this.getGenericSubProtocols(), this.initializeTezosDomains()])
+    console.log("after init 12")
+
+    await Promise.all([
+      this.initSaplingProtocols(), 
+      this.getGenericSubProtocols(), 
+      this.initializeTezosDomains()
+    ])
+    console.log("after init 13")
+
+
   }
 
   private async initSaplingProtocols(networks: ProtocolNetwork[] = []): Promise<void> {
+    console.log('networks', networks)
     if (networks.length === 0) {
+      console.log('initSaplingProtocols 0')
       const supportedNetworks: ProtocolNetwork[] = await this.protocolService.getNetworksForProtocol(MainProtocolSymbols.XTZ)
+      console.log('initSaplingProtocols 1')
       networks.push(...supportedNetworks)
     }
+    console.log('initSaplingProtocols 00')
 
     const externalMethodProvider:
       | TezosSaplingExternalMethodProvider
       | undefined = await this.saplingNativeService.createExternalMethodProvider()
-
+    console.log('initSaplingProtocols 11')
     const shieldedTezProtocols = await Promise.all(
       networks.map(async (networkV0) => {
         const contractAddresses = await this.storageProvider.get(WalletStorageKey.CONTRACT_ADDRESSES)

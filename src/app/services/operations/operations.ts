@@ -17,6 +17,7 @@ import {
 } from '@airgap/coinlib-core'
 import { CosmosTransactionSignRequest } from '@airgap/cosmos-core/v1/serializer/v3/schemas/definitions/transaction-sign-request-cosmos'
 import { EthereumTransactionSignRequest } from '@airgap/ethereum'
+import { RootstockTransactionSignRequest } from '@airgap/rootstock'
 import { newAmount, newPublicKey } from '@airgap/module-kit'
 import { IACMessageDefinitionObjectV3, IACMessageType } from '@airgap/serializer'
 import { SubstrateTransactionSignRequest } from '@airgap/substrate'
@@ -44,6 +45,7 @@ import { ErrorCategory, handleErrorSentry } from '../sentry-error-handler/sentry
 export type SerializableTx = (
   | TezosTransactionSignRequest
   | EthereumTransactionSignRequest
+  | RootstockTransactionSignRequest
   | BitcoinTransactionSignRequest
   | AeternityTransactionSignRequest
   | CosmosTransactionSignRequest

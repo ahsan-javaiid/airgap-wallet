@@ -47,6 +47,10 @@ export class ActionGroup {
     actionMap.set(MainProtocolSymbols.ETH, async () => {
       return this.getEthereumActions()
     })
+    actionMap.set(MainProtocolSymbols.ROOTSTOCK, async () => {
+      console.log('are we here stuck')
+      return this.getRskActions()
+    })
     actionMap.set(MainProtocolSymbols.COSMOS, async () => {
       return this.getCosmosActions()
     })
@@ -74,6 +78,7 @@ export class ActionGroup {
     actionMap.set(MainProtocolSymbols.OPTIMISM, async () => {
       return this.getOptimismActions()
     })
+    console.log('yes its called')
 
     const actionFunction: () => Promise<Action<any, any>[]> | undefined = actionMap.get(this.callerContext.protocolIdentifier)
 
@@ -245,6 +250,39 @@ export class ActionGroup {
             this.callerContext.router
               .navigateByUrl(
                 `/sub-account-add/${DataServiceKey.DETAIL}/${info.wallet.publicKey}/${info.wallet.protocol.identifier}/${info.wallet.addressIndex}/${info.subProtocolType}`
+              )
+              .catch(handleErrorSentry(ErrorCategory.NAVIGATION))
+          })
+        })
+        const addTokenAction: LinkedAction<void, AddTokenActionContext> = new LinkedAction(prepareAddTokenActionContext, AddTokenAction)
+        addTokenAction.onComplete = async (): Promise<void> => {
+          addTokenAction.getLinkedAction().context.location.navigateRoot('')
+        }
+
+        return addTokenAction
+      }
+    )
+
+    return [addTokenButtonAction]
+  }
+
+  private getRskActions(): Action<any, any>[] {
+    const addTokenButtonAction: ButtonAction<void, void> = new ButtonAction(
+      { name: 'account-transaction-list.add-tokens_label', icon: 'add-outline', identifier: 'add-tokens' },
+      () => {
+        const prepareAddTokenActionContext: SimpleAction<AddTokenActionContext> = new SimpleAction(() => {
+          return new Promise<AddTokenActionContext>(async resolve => {
+            const info = {
+              subProtocolType: SubProtocolType.TOKEN,
+              wallet: this.callerContext.wallet,
+              actionCallback: resolve
+            }
+            this.callerContext.dataService.setData(DataServiceKey.DETAIL, info)
+            this.callerContext.router
+              .navigateByUrl(
+                `/sub-account-add/${DataServiceKey.DETAIL}/${info.wallet.publicKey}/${info.wallet.protocol.identifier}/${
+                  info.wallet.addressIndex
+                }/${info.subProtocolType}`
               )
               .catch(handleErrorSentry(ErrorCategory.NAVIGATION))
           })
